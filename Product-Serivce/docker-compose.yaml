@@ -1,0 +1,16 @@
+services:
+  mongo:                              # 1️⃣ Define a service (a container)
+    image: mongo:7.0.5                # 2️⃣ Use MongoDB version 7.0.5
+    container_name: mongodb           # 3️⃣ Name of the container
+    restart: unless-stopped           # 4️⃣ Restart automatically unless you stop it manually
+    environment:                      # 5️⃣ Set environment variables inside container
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: product_service_db
+    ports:                            # 6️⃣ Map local port 27017 to container port 27017
+      - "27017:27017"
+    volumes:                          # 7️⃣ Attach persistent storage
+      - mongo-data:/data/db           # Local volume "mongo-data" → inside container’s /data/db
+
+volumes:
+  mongo-data:                         # 8️⃣ Declare the named volume
