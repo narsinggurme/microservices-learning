@@ -37,12 +37,7 @@ application.properties
 application.yml
 docker-compose.yaml
 
-# IntelliJ IDEA project files
-.idea/
-*.iml
 
-# Maven target folder
-target/
 
 # Logs and temporary files
 *.log
