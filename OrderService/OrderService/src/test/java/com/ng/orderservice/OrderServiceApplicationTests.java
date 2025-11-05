@@ -20,6 +20,7 @@ class OrderServiceApplicationTests {
     @SuppressWarnings("unused") // Value injected at runtime
     @LocalServerPort
     private int port;
+
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost";
