@@ -5,7 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root        # Set root password
     ports:
-      - "3306:3306"                    # Map host port 3307 → container port 3306
+      - "3316:3306"                    # Map host port 3307 → container port 3306
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d  # Mount your SQL init folder
       - mysql_data:/var/lib/mysql             # Persistent database data

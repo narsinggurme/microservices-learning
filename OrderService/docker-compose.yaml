@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0.36
-    container_name: mysql_container
+    container_name: mysql_order_Service_container
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: order_db

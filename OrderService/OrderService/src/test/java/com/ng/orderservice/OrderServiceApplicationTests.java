@@ -1,16 +1,19 @@
 package com.ng.orderservice;
 
+import com.ng.orderservice.stubs.InventoryClicentStubs;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.MySQLContainer;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWireMock(port = 0)
 class OrderServiceApplicationTests {
 
     @SuppressWarnings("unused") // Managed automatically by Spring Boot Testcontainers
@@ -38,6 +41,7 @@ class OrderServiceApplicationTests {
                    "quantity" : 1
                 }
                 """;
+        InventoryClicentStubs.stubInventoryCalls("Iphone", 1);
 
         RestAssured.given()
                 .header("Content-Type", "application/json")
@@ -46,5 +50,23 @@ class OrderServiceApplicationTests {
                 .post("/api/order")
                 .then()
                 .statusCode(201);
+
+        String submitOrderRequestOutOfStock = """
+                {
+                   "skuCode":"Samsung",
+                   "orderNumber" : 2,
+                   "price":999,
+                   "quantity" : 1
+                }
+                """;
+        InventoryClicentStubs.stubInventoryOutOfStockCalls("Samsung", 1);
+
+        RestAssured.given()
+                .header("Content-Type", "application/json")
+                .body(submitOrderRequestOutOfStock)
+                .when()
+                .post("/api/order")
+                .then()
+                .statusCode(500);
     }
 }
