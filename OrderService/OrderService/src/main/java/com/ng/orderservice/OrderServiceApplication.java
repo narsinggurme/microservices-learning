@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /*
 @OpenAPIDefinition is used to provide metadata for the OpenAPI documentation.
@@ -23,7 +22,6 @@ and we used only this annotation instead of creating a separate configuration cl
 
 
 @SpringBootApplication
-@EnableFeignClients
 public class OrderServiceApplication {
 
 	public static void main(String[] args) {
