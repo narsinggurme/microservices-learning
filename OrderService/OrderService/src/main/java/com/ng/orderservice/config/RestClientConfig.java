@@ -24,4 +24,5 @@ public class RestClientConfig {
         return httpServiceProxyFactory.createClient(InventoryClient.class);
     }
 
+    public Client
 }

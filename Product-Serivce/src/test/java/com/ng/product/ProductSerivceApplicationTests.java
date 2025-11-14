@@ -12,27 +12,27 @@ import org.testcontainers.containers.MongoDBContainer;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ProductSerivceApplicationTests
-{
+class ProductSerivceApplicationTests {
     @ServiceConnection
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0.5");
-    @LocalServerPort
-    private Integer port;
 
-    @BeforeEach
-    void setUp()
-    {
-        RestAssured.baseURI="http://localhost";
-        RestAssured.port=port;
-    }
     static {
         mongoDBContainer.start();
         System.out.println("MongoDB container started on port: " + mongoDBContainer.getFirstMappedPort());
         System.setProperty("spring.data.mongodb.uri", mongoDBContainer.getReplicaSetUrl());
     }
 
-	@Test
-	void shouldCreateProduct() {
+    @LocalServerPort
+    private Integer port;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
+    }
+
+    @Test
+    void shouldCreateProduct() {
         String requestBody = """
                 {
                     "name": "iPhone 14",
@@ -51,6 +51,6 @@ class ProductSerivceApplicationTests
                 .body("name", Matchers.equalTo("iPhone 14"))
                 .body("description", Matchers.equalTo("Latest Apple iPhone model"))
                 .body("price", Matchers.equalTo(999.99f));
-	}
+    }
 
 }

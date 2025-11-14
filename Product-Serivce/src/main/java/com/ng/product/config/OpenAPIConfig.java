@@ -11,14 +11,14 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAPIConfig {
     @Bean
     public OpenAPI productOpenAPI() {
-        return new OpenAPI().info( new Info()
-        .title("Product Service API")
-                .description("API documentation for the Product Service")
-                .version("1.0.0")
-                .license(new License()
-                .name("Apache 2.0")))
+        return new OpenAPI().info(new Info()
+                        .title("Product Service API")
+                        .description("API documentation for the Product Service")
+                        .version("1.0.0")
+                        .license(new License()
+                                .name("Apache 2.0")))
                 .externalDocs(new ExternalDocumentation()
-                .description("Product Service Wiki Documentation")
-                .url("https://localhost:dummyurl.com/api/docs"));
+                        .description("Product Service Wiki Documentation")
+                        .url("https://localhost:dummyurl.com/api/docs"));
     }
 }

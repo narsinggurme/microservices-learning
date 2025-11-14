@@ -13,12 +13,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductService
-{
+public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductResponse createProduct(ProductRequest productRequest)
-    {
+    public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.name())  // instead of productRequest.getName(), because it's a record
                 .description(productRequest.description())
@@ -30,8 +28,7 @@ public class ProductService
         return new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice());
     }
 
-    public List<ProductResponse> getAllProducts()
-    {
+    public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(Product -> new ProductResponse(

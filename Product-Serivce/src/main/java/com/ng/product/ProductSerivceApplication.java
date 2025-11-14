@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(
-        info = @Info (
+        info = @Info(
                 title = "Product Service API",
                 version = "1.0.0",
                 description = "API documentation for the Product Service"
@@ -15,8 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ProductSerivceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProductSerivceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ProductSerivceApplication.class, args);
+    }
 
 }
