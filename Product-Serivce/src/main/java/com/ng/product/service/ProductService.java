@@ -1,7 +1,9 @@
 package com.ng.product.service;
 
+import com.ng.product.dto.CommentDto;
 import com.ng.product.dto.ProductRequest;
 import com.ng.product.dto.ProductResponse;
+import com.ng.product.model.Comment;
 import com.ng.product.model.Product;
 import com.ng.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,28 +16,82 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductService {
+
     private final ProductRepository productRepository;
 
     public ProductResponse createProduct(ProductRequest productRequest) {
+
         Product product = Product.builder()
-                .name(productRequest.name())  // instead of productRequest.getName(), because it's a record
+                .skuCode(productRequest.skuCode())
+                .name(productRequest.name())
                 .description(productRequest.description())
                 .price(productRequest.price())
+                .imageUrl(productRequest.imageUrl())
+                .rating(productRequest.rating())
+                .reviews(productRequest.reviews())
+                .comments(mapToComments(productRequest.comments()))
                 .build();
+
         productRepository.save(product);
+
         log.info("Product {} is saved", product.getId());
 
-        return new ProductResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice());
+        return mapToResponse(product);
     }
 
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(Product -> new ProductResponse(
-                        Product.getId(),
-                        Product.getName(),
-                        Product.getDescription(),
-                        Product.getPrice()
-                )).toList();
+                .map(this::mapToResponse)
+                .toList();
     }
+
+    // ---------------- MAPPERS ----------------
+
+    private ProductResponse mapToResponse(Product product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getSkuCode(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getImageUrl(),
+                product.getRating(),
+                product.getReviews(),
+                mapToCommentDtos(product.getComments())
+        );
+    }
+
+    private List<Comment> mapToComments(List<CommentDto> commentDtos) {
+        if (commentDtos == null) return List.of();
+
+        return commentDtos.stream()
+                .map(dto -> Comment.builder()
+                        .user(dto.user())
+                        .stars(dto.stars())
+                        .comment(dto.comment())
+                        .date(dto.date())
+                        .build())
+                .toList();
+    }
+
+    private List<CommentDto> mapToCommentDtos(List<Comment> comments) {
+        if (comments == null) return List.of();
+
+        return comments.stream()
+                .map(c -> new CommentDto(
+                        c.getUser(),
+                        c.getStars(),
+                        c.getComment(),
+                        c.getDate()
+                ))
+                .toList();
+    }
+    public ProductResponse getProductById(String id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return mapToResponse(product);
+    }
+
 }

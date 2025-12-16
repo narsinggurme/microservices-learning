@@ -1,24 +1,30 @@
 package com.ng.product.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Document("Product")
+@Document(collection = "products")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
 public class Product {
+
     @Id
     private String id;
     private String skuCode;
     private String name;
     private String description;
     private BigDecimal price;
+
+    private String imageUrl;
+
+    private Double rating;
+    private Integer reviews;
+
+    private List<Comment> comments;
 }
