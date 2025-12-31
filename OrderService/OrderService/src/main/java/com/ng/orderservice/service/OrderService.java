@@ -24,7 +24,8 @@ public class OrderService {
     public void placeOrder(OrderRequest orderRequest) {
         String inventoryResponse = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
 
-        if ("IN STOCK".equalsIgnoreCase(inventoryResponse)) {
+        if ("IN STOCK".equalsIgnoreCase(inventoryResponse))
+        {
             Order order = new Order();
             order.setOrderNumber(UUID.randomUUID().toString());
             order.setSkuCode(orderRequest.skuCode());
@@ -42,7 +43,9 @@ public class OrderService {
             log.info("Sending OrderPlacedEvent to Kafka for order number: {}",orderPlacedEvent);
             kafkaTemplate.send("order_placed_topic", orderPlacedEvent);
             log.info("OrderPlacedEvent sent to Kafka for order number: {}", orderPlacedEvent);
-        } else {
+        }
+        else
+        {
             throw new RuntimeException(orderRequest.skuCode() + " is not in stock, please try again later");
         }
     }

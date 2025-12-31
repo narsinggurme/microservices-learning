@@ -16,21 +16,18 @@ public class ProductController {
 
     private final ProductService productService;
 
-    // CREATE PRODUCT
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse createProduct(@RequestBody ProductRequest productRequest) {
         return productService.createProduct(productRequest);
     }
 
-    // GET ALL PRODUCTS
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    // GET PRODUCT BY ID (recommended)
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse getProductById(@PathVariable String id) {

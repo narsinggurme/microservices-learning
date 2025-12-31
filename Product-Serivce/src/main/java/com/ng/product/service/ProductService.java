@@ -23,6 +23,7 @@ public class ProductService {
 
         Product product = Product.builder()
                 .skuCode(productRequest.skuCode())
+                .category(productRequest.category())
                 .name(productRequest.name())
                 .description(productRequest.description())
                 .price(productRequest.price())
@@ -46,11 +47,10 @@ public class ProductService {
                 .toList();
     }
 
-    // ---------------- MAPPERS ----------------
-
     private ProductResponse mapToResponse(Product product) {
         return new ProductResponse(
                 product.getId(),
+                product.getCategory(),
                 product.getSkuCode(),
                 product.getName(),
                 product.getDescription(),

@@ -5,6 +5,7 @@ import java.util.List;
 
 public record ProductRequest(
         String skuCode,
+        String category,
         String name,
         String description,
         BigDecimal price,
