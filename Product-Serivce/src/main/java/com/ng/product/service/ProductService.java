@@ -47,6 +47,13 @@ public class ProductService {
                 .toList();
     }
 
+    public  List<ProductResponse> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     private ProductResponse mapToResponse(Product product) {
         return new ProductResponse(
                 product.getId(),
