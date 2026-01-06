@@ -14,10 +14,16 @@ public interface InventoryClient {
     @Retry(name = "inventory")
     String isInStock(@RequestParam String skuCode, @RequestParam Integer quantity);
 
+//    default String inventoryFallback(String skuCode, Integer quantity, Throwable t) {
+//        log.warning(
+//                "Fallback triggered for SKU: " + skuCode + ", qty: " + quantity + " due to: " + t.getMessage()
+//        );
+//        return "false";
+//    }
+
     default String inventoryFallback(String skuCode, Integer quantity, Throwable t) {
-        log.warning(
-                "Fallback triggered for SKU: " + skuCode + ", qty: " + quantity + " due to: " + t.getMessage()
-        );
-        return "false";
+        log.warning("Inventory fallback for SKU: " + skuCode);
+        return "OUT OF STOCK";
     }
+
 }
