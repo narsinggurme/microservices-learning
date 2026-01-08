@@ -1,7 +1,6 @@
 package com.api_gateway.routes;
 
 import org.springframework.cloud.gateway.server.mvc.filter.CircuitBreakerFilterFunctions;
-import org.springframework.cloud.gateway.server.mvc.handler.GatewayRouterFunctions;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -84,10 +83,20 @@ public class Routes {
                 .build();
     }
 
+    //    @Bean
+//    public RouterFunction<ServerResponse> fallbackRoute() {
+//        return route("fallback-route")
+//                .GET("/fallback-route", request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service is currently unavailable. Please try again later."))
+//                .build();
+//    }
     @Bean
     public RouterFunction<ServerResponse> fallbackRoute() {
         return route("fallback-route")
-                .GET("/fallback-route", request -> ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service is currently unavailable. Please try again later."))
+                .route(RequestPredicates.path("/fallback-route"),
+                        request -> ServerResponse
+                                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                                .body("Service is currently unavailable. Please try again later."))
                 .build();
     }
+
 }
