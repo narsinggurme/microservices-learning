@@ -22,9 +22,9 @@ public class OrderService {
     private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public void placeOrder(OrderRequest orderRequest) {
-        String inventoryResponse = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
+        boolean inventoryResponse = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
 
-        if ("IN STOCK".equalsIgnoreCase(inventoryResponse))
+        if (inventoryResponse)
         {
             Order order = new Order();
             order.setOrderNumber(UUID.randomUUID().toString());
