@@ -3,10 +3,7 @@ package com.ng.inventory.controller;
 import com.ng.inventory.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +13,8 @@ public class InventoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public String isInStock(String skuCode, Integer quantity) {
-        boolean inStock = inventoryService.isInStock(skuCode, quantity);
-        return inStock ? "IN STOCK" : "OUT OF STOCK";
+    public boolean isInStock(@RequestParam String skuCode,
+                             @RequestParam Integer quantity) {
+        return inventoryService.isInStock(skuCode, quantity);
     }
 }

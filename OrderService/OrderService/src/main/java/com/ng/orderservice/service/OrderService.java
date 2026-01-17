@@ -3,6 +3,7 @@ package com.ng.orderservice.service;
 import com.ng.orderservice.client.InventoryClient;
 import com.ng.orderservice.dto.OrderRequest;
 import com.ng.orderservice.event.OrderPlacedEvent;
+import com.ng.orderservice.exception.OutOfStockException;
 import com.ng.orderservice.model.Order;
 import com.ng.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,13 @@ public class OrderService {
     public void placeOrder(OrderRequest orderRequest) {
         boolean inventoryResponse = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
 
-        if (inventoryResponse)
+        if (!inventoryResponse)
+        {
+            throw new OutOfStockException(
+                    orderRequest.skuCode() + " is out of stock"
+            );
+        }
+        else
         {
             Order order = new Order();
             order.setOrderNumber(UUID.randomUUID().toString());
@@ -44,9 +51,6 @@ public class OrderService {
             kafkaTemplate.send("order_placed_topic", orderPlacedEvent);
             log.info("OrderPlacedEvent sent to Kafka for order number: {}", orderPlacedEvent);
         }
-        else
-        {
-            throw new RuntimeException(orderRequest.skuCode() + " is not in stock, please try again later");
-        }
+
     }
 }
