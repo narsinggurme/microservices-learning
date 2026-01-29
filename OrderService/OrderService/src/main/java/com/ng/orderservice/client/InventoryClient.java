@@ -8,25 +8,21 @@ import java.util.logging.Logger;
 
 public interface InventoryClient {
     Logger log = Logger.getLogger(InventoryClient.class.getName());
-//
-//    @GetExchange("/api/inventory")
-//    @CircuitBreaker(name = "inventory", fallbackMethod = "inventoryFallback")
-//    @Retry(name = "inventory")
-//    String isInStock(@RequestParam String skuCode, @RequestParam Integer quantity);
-//
-//    default String inventoryFallback(String skuCode, Integer quantity, Throwable t) {
-//        log.warning(
-//                "Fallback triggered for SKU: " + skuCode + ", qty: " + quantity + " due to: " + t.getMessage()
-//        );
-//        return "false";
-//    }
-
 
     @GetExchange("/api/inventory")
     @CircuitBreaker(name = "inventory", fallbackMethod = "inventoryFallback")
     @Retry(name = "inventory")
-    boolean isInStock(@RequestParam String skuCode,
-                      @RequestParam Integer quantity);
+//    boolean isInStock(@RequestParam String skuCode,
+//                      @RequestParam Integer quantity);
+    public default boolean isInStock(@RequestParam String skuCode,
+                                     @RequestParam Integer quantity) {
+
+        System.out.println("Checking inventory for SKU: " + skuCode +
+                ", quantity: " + quantity);
+
+        // logic here
+        return true;
+    }
 
     default boolean inventoryFallback(String skuCode,
                                       Integer quantity,
@@ -35,9 +31,6 @@ public interface InventoryClient {
         return false;
     }
 
-//    default String inventoryFallback(String skuCode, Integer quantity, Throwable t) {
-//        log.warning("Inventory fallback for SKU: " + skuCode);
-//        return "OUT OF STOCK";
-//    }
+
 
 }

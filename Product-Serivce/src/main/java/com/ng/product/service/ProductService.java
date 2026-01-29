@@ -48,7 +48,7 @@ public class ProductService {
     }
 
     public  List<ProductResponse> getProductsByCategory(String category) {
-        return productRepository.findByCategory(category)
+        return productRepository.findByCategoryIgnoreCase(category)
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
@@ -57,8 +57,8 @@ public class ProductService {
     private ProductResponse mapToResponse(Product product) {
         return new ProductResponse(
                 product.getId(),
-                product.getCategory(),
                 product.getSkuCode(),
+                product.getCategory(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
@@ -69,10 +69,11 @@ public class ProductService {
         );
     }
 
-    private List<Comment> mapToComments(List<CommentDto> commentDtos) {
-        if (commentDtos == null) return List.of();
+    private List<Comment> mapToComments(List<CommentDto> comments)
+    {
+        if (comments == null) return List.of();
 
-        return commentDtos.stream()
+        return comments.stream()
                 .map(dto -> Comment.builder()
                         .user(dto.user())
                         .stars(dto.stars())
@@ -82,7 +83,8 @@ public class ProductService {
                 .toList();
     }
 
-    private List<CommentDto> mapToCommentDtos(List<Comment> comments) {
+    private List<CommentDto> mapToCommentDtos(List<Comment> comments)
+    {
         if (comments == null) return List.of();
 
         return comments.stream()
@@ -94,7 +96,8 @@ public class ProductService {
                 ))
                 .toList();
     }
-    public ProductResponse getProductById(String id) {
+    public ProductResponse getProductById(String id)
+    {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 

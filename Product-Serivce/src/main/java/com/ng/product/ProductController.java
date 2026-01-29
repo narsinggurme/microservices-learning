@@ -26,6 +26,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts(@RequestParam(required = false) String category)
     {
+        System.out.println("Category: " + category);
         if (category != null)
         {
             return productService.getProductsByCategory(category);
